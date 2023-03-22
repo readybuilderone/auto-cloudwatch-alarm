@@ -1,0 +1,15 @@
+- ec2: gameserver
+  prefix: abc
+  alarms:
+    - alarm: p0-cpu-higher-than-40
+      thres: 40
+    - alarm: p1-cpu-higher-than-80
+      thres: 80
+      
+- ec2: dbgate
+  prefix: def
+  alarms:
+    - alarm: p0-cpu-higher-than-40
+      thres: 40
+    - alarm: p1-cpu-higher-than-80
+      thres: 80
