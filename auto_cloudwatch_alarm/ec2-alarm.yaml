@@ -1,0 +1,54 @@
+- ec2: gameserver
+  prefix: game
+  alarms:
+    - alarmName: p2-cpu-higher-than-40-{INSTANCENAME}
+      metricName: CPUUtilization
+      statistic: Average
+      period: 60
+      evaluationPeriods: 2
+      threshold: 40
+      comparisonOperator: GreaterThanThreshold
+      treatMissingData: missing
+      okActions: arn:aws:sns:ap-northeast-1:750521193989:CloudwatchAlarmTopic
+      alarmActions: arn:aws:sns:ap-northeast-1:750521193989:CloudwatchAlarmTopic
+      insufficientDataActions: arn:aws:sns:ap-northeast-1:750521193989:CloudwatchAlarmTopic
+
+    - alarmName: p1-cpu-higher-than-80-{INSTANCENAME}
+      metricName: CPUUtilization
+      statistic: Average
+      period: 60
+      evaluationPeriods: 1
+      threshold: 80
+      comparisonOperator: GreaterThanThreshold
+      treatMissingData: missing
+      okActions: arn:aws:sns:ap-northeast-1:750521193989:CloudwatchAlarmTopic
+      alarmActions: arn:aws:sns:ap-northeast-1:750521193989:CloudwatchAlarmTopic
+      insufficientDataActions: arn:aws:sns:ap-northeast-1:750521193989:CloudwatchAlarmTopic
+      
+- ec2: dbgate
+  prefix: dbgt
+  alarms:
+    - alarmName: p1-system-status-check-{INSTANCENAME}
+      metricName: StatusCheckFailed
+      statistic: Maximum
+      period: 60
+      evaluationPeriods: 1
+      threshold: 1
+      comparisonOperator: GreaterThanOrEqualToThreshold
+      treatMissingData: missing
+      okActions: arn:aws:sns:ap-northeast-1:750521193989:CloudwatchAlarmTopic
+      alarmActions: arn:aws:sns:ap-northeast-1:750521193989:CloudwatchAlarmTopic
+      insufficientDataActions: arn:aws:sns:ap-northeast-1:750521193989:CloudwatchAlarmTopic
+
+
+    # - alarmName: p1-cpu-higher-than-40-{INSTANCENAME}
+    #   metricName: CPUUtilization
+    #   statistic: Average #'SampleCount'|'Average'|'Sum'|'Minimum'|'Maximum'
+    #   period: 60
+    #   evaluationPeriods: 3
+    #   threshold: 40
+    #   comparisonOperator: GreaterThanThreshold
+    #   treatMissingData: missing #breaching | notBreaching | ignore | missing
+    #   okActions: arn:aws:sns:ap-northeast-1:750521193989:CloudwatchAlarmTopic #arn:aws:sns:region:account-id:sns-topic-name
+    #   alarmActions: arn:aws:sns:ap-northeast-1:750521193989:CloudwatchAlarmTopic
+    #   insufficientDataActions: arn:aws:sns:ap-northeast-1:750521193989:CloudwatchAlarmTopic

@@ -1,21 +1,22 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  sam-workshop-app
+  auto-cloudwatch-alarm
 
-  Sample SAM Template for sam-workshop-app
+  Auto Create/Delete CloudWatch Alarms POC
 
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
 Globals:
   Function:
-    Timeout: 3
+    Timeout: 30
     MemorySize: 128
 
 Resources:
-  HelloWorldFunction:
+  AutoAlarmFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: hello_world/
+      FunctionName: auto_cloudwatch_function
+      CodeUri: auto_cloudwatch_alarm/
       Handler: app.lambda_handler
       Runtime: python3.9
       Architectures:
@@ -26,31 +27,56 @@ Resources:
       Policies:
         - CloudWatchFullAccess
         - AmazonEC2ReadOnlyAccess
-      Events:
-        HelloWorld:
-          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
-          Properties:
-            Path: /hello
-            Method: get
       Layers:
         - !Ref libs
+      Events:
+        Trigger:
+          Type: CloudWatchEvent 
+          Properties:
+            Pattern:
+              source:
+                - aws.ec2
+              detail-type:
+                - EC2 Instance State-change Notification                
+              detail:
+                state:
+                  - running
+                  - terminated
+
+  UpdateAlarmFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      FunctionName: update_cloudwatch_function
+      CodeUri: auto_cloudwatch_alarm/
+      Handler: update-alarm.lambda_handler
+      Runtime: python3.9
+      Architectures:
+        - x86_64
+      Environment:
+        Variables:
+          TARGET_REGION: ap-northeast-1
+      Policies:
+        - CloudWatchFullAccess
+        - AmazonEC2ReadOnlyAccess
+      Layers:
+        - !Ref libs
+
   libs:
     Type: AWS::Serverless::LayerVersion
     Properties:
       LayerName: auto-cloudwatch-layer
-      Description: Lambda layer with libs like boto3, pyyaml
+      Description: Lambda layer with libs like boto3 and yaml
       ContentUri: ./libs
+      CompatibleRuntimes:
+        - python3.9
+    Metadata:
+      BuildMethod: python3.9
+
 
 Outputs:
   # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
   # Find out more about other implicit resources you can reference within SAM
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
-  HelloWorldApi:
-    Description: "API Gateway endpoint URL for Prod stage for Hello World function"
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/hello/"
-  HelloWorldFunction:
-    Description: "Hello World Lambda Function ARN"
-    Value: !GetAtt HelloWorldFunction.Arn
-  HelloWorldFunctionIamRole:
-    Description: "Implicit IAM Role created for Hello World function"
-    Value: !GetAtt HelloWorldFunctionRole.Arn
+  AutoAlarmFunction:
+    Description: "AutoAlarmFunction ARN"
+    Value: !GetAtt AutoAlarmFunction.Arn

@@ -22,10 +22,11 @@ capabilities = "CAPABILITY_IAM"
 confirm_changeset = true
 resolve_s3 = true
 s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-dc2n1v81pqnx"
-s3_prefix = "sam-workshop-app"
+s3_prefix = "auto-cloudwatch-alarm"
 region = "ap-northeast-1"
 disable_rollback = true
 image_repositories = []
+stack_name = "auto-cloudwatch-alarm"
 
 [default.package]
 [default.package.parameters]
