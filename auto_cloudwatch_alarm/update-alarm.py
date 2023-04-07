@@ -27,7 +27,12 @@ def lambda_handler(event, context):
     # 处理第一页查询结果
     for reservation in response['Reservations']:
         for instance in reservation['Instances']:
-            instance_id, instance_name = instance['InstanceId'], instance['Tags'][0]['Value']
+            instance_id= instance['InstanceId']
+            instance_name = ''
+            for tag in instance['Tags']:
+                if tag['Key'] == 'Name':
+                    instance_name = tag['Value']
+                    break
             logger.info('instance id: %s; instance name: %s', instance_id, instance_name)
             update_alarm_group(instance_id, instance_name)
 
@@ -39,7 +44,12 @@ def lambda_handler(event, context):
         # 处理下一页查询结果
         for reservation in response['Reservations']:
             for instance in reservation['Instances']:
-                instance_id, instance_name = instance['InstanceId'], instance['Tags'][0]['Value']
+                instance_id= instance['InstanceId']
+                instance_name = ''
+                for tag in instance['Tags']:
+                    if tag['Key'] == 'Name':
+                        instance_name = tag['Value']
+                        break
                 logger.info('instance id: %s; instance name: %s', instance_id, instance_name)
                 update_alarm_group(instance_id, instance_name)
    
