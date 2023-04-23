@@ -1,5 +1,5 @@
-- ec2: gameserver
-  prefix: game
+- ec2: webserver
+  prefix: WebServer
   alarms:
     - alarmName: p2-cpu-higher-than-40-{INSTANCENAME}
       metricName: CPUUtilization
@@ -25,8 +25,8 @@
       alarmActions: arn:aws:sns:ap-northeast-1:750521193989:CloudwatchAlarmTopic
       insufficientDataActions: arn:aws:sns:ap-northeast-1:750521193989:CloudwatchAlarmTopic
       
-- ec2: dbgate
-  prefix: dbgt
+- ec2: applicationserver
+  prefix: ApplicationServer
   alarms:
     - alarmName: p1-system-status-check-{INSTANCENAME}
       metricName: StatusCheckFailed
@@ -39,16 +39,3 @@
       okActions: arn:aws:sns:ap-northeast-1:750521193989:CloudwatchAlarmTopic
       alarmActions: arn:aws:sns:ap-northeast-1:750521193989:CloudwatchAlarmTopic
       insufficientDataActions: arn:aws:sns:ap-northeast-1:750521193989:CloudwatchAlarmTopic
-
-
-    # - alarmName: p1-cpu-higher-than-40-{INSTANCENAME}
-    #   metricName: CPUUtilization
-    #   statistic: Average #'SampleCount'|'Average'|'Sum'|'Minimum'|'Maximum'
-    #   period: 60
-    #   evaluationPeriods: 3
-    #   threshold: 40
-    #   comparisonOperator: GreaterThanThreshold
-    #   treatMissingData: missing #breaching | notBreaching | ignore | missing
-    #   okActions: arn:aws:sns:ap-northeast-1:750521193989:CloudwatchAlarmTopic #arn:aws:sns:region:account-id:sns-topic-name
-    #   alarmActions: arn:aws:sns:ap-northeast-1:750521193989:CloudwatchAlarmTopic
-    #   insufficientDataActions: arn:aws:sns:ap-northeast-1:750521193989:CloudwatchAlarmTopic
