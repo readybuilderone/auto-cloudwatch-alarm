@@ -63,26 +63,6 @@ def create_ec2_alarm(alarm, instance_id, instance_name):
     alarm_name_pattern = alarm['alarmName']
     alarm_name = alarm_name_pattern.replace('{INSTANCENAME}', instance_name)
     logger.info('trying to create alarm: %s', alarm_name)
-    # Create alarm
-    # cloudwatch.put_metric_alarm(
-    #     AlarmName=alarm_name,
-    #     ComparisonOperator='GreaterThanThreshold',
-    #     EvaluationPeriods=1,
-    #     MetricName='CPUUtilization',
-    #     Namespace='AWS/EC2',
-    #     Period=60,
-    #     Statistic='Average',
-    #     Threshold=70.0,
-    #     ActionsEnabled=False,
-    #     AlarmDescription='Alarm when server CPU exceeds 70%',
-    #     Dimensions=[
-    #         {
-    #         'Name': 'InstanceId',
-    #         'Value': 'i-01082ea242dcdc08c'
-    #         },
-    #     ],
-    #     Unit='Seconds'
-    # )
     cloudwatch.put_metric_alarm(
         Namespace ='AWS/EC2',
         Dimensions=[
