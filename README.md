@@ -9,10 +9,14 @@ AWS CloudWatch Alarm 是 AWS CloudWatch 的一项功能，用于监控 AWS 资�
 
 为了解决这个问题，这里介绍了一个利用EventBridge去监听EC2 创建/销毁 时间的通知，并触发Lambda函数去自动创建/删除CloudWatch Alarm的方案。
 
+## 方案架构图
+
+![architecture image](https://github.com/readybuilderone/auto-cloudwatch-alarm/blob/33fe7aed8be4b7ce13c1777e8127205a4c52dcc0/architecture.png)
+
 ## 如何安装
 本方案使用SAM CLI来进行构建。
 
-#### 环境准备
+### 环境准备
 
 
 - SAM CLI， 参考 https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/install-sam-cli.html
@@ -20,9 +24,12 @@ AWS CloudWatch Alarm 是 AWS CloudWatch 的一项功能，用于监控 AWS 资�
 - Python3， 参考 https://www.python.org/downloads/
   
 - Docker， 参考 https://hub.docker.com/
+
+
+
   
 
-#### 使用SAM CLI 部署方案
+### 使用SAM CLI 部署方案
 
 ```shell
 git clone https://github.com/readybuilderone/auto-cloudwatch-alarm.git
